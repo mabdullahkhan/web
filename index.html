@@ -1,0 +1,1869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="M Abdullah Khan – Robotics & Embedded Systems Engineer, Space Technology Enthusiast, IEEE Leader. Portfolio showcasing CanSat, Mars Rover, IoT, and research contributions.">
+<meta name="keywords" content="M Abdullah Khan, Robotics, Embedded Systems, Space Technology, IoT, IEEE, CanSat, Mars Rover, Bangladesh">
+<meta property="og:title" content="M Abdullah Khan | Robotics & Space Systems Engineer">
+<meta property="og:description" content="EEE professional specializing in Robotics, Embedded Systems, Space Technology, and IoT.">
+<title>M Abdullah Khan | Robotics & Space Systems Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* ===== TOKENS ===== */
+  :root {
+    --space-navy: #0A0E1A;
+    --surface: #0D1117;
+    --surface-raised: #131920;
+    --surface-card: #161D27;
+    --cyan: #00D4FF;
+    --cyan-dim: rgba(0,212,255,0.12);
+    --cyan-glow: rgba(0,212,255,0.25);
+    --gold: #FFB347;
+    --gold-dim: rgba(255,179,71,0.12);
+    --text-primary: #F0F4FF;
+    --text-secondary: #8B9BB8;
+    --text-muted: #4A5568;
+    --border: rgba(255,255,255,0.06);
+    --border-active: rgba(0,212,255,0.3);
+    --font-display: 'Space Grotesk', sans-serif;
+    --font-body: 'Inter', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+    --radius: 12px;
+    --radius-sm: 6px;
+    --transition: 0.3s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  /* ===== RESET ===== */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--space-navy);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  a { color: var(--cyan); text-decoration: none; transition: color var(--transition); }
+  a:hover { color: #fff; }
+  img { max-width: 100%; display: block; }
+  ul { list-style: none; }
+
+  /* ===== SCROLLBAR ===== */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--surface); }
+  ::-webkit-scrollbar-thumb { background: var(--cyan); border-radius: 2px; }
+
+  /* ===== CANVAS STARFIELD ===== */
+  #starfield {
+    position: fixed; top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none; z-index: 0;
+    opacity: 0.6;
+  }
+
+  /* ===== NAV ===== */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 0 5%;
+    height: 64px;
+    display: flex; align-items: center; justify-content: space-between;
+    background: rgba(10,14,26,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    transition: background var(--transition);
+  }
+  .nav-logo {
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    color: var(--cyan);
+    letter-spacing: 0.05em;
+  }
+  .nav-logo span { color: var(--text-muted); }
+  .nav-links { display: flex; gap: 2rem; }
+  .nav-links a {
+    font-size: 0.8rem;
+    font-family: var(--font-mono);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    transition: color var(--transition);
+  }
+  .nav-links a:hover { color: var(--cyan); }
+  .nav-cta {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    padding: 0.4rem 1rem;
+    border: 1px solid var(--cyan);
+    border-radius: var(--radius-sm);
+    color: var(--cyan) !important;
+    letter-spacing: 0.08em;
+  }
+  .nav-cta:hover {
+    background: var(--cyan-dim);
+    color: #fff !important;
+  }
+  .nav-hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    padding: 4px;
+  }
+  .nav-hamburger span {
+    display: block;
+    width: 22px; height: 2px;
+    background: var(--text-secondary);
+    border-radius: 2px;
+    transition: var(--transition);
+  }
+  .mobile-menu {
+    display: none;
+    position: fixed; top: 64px; left: 0; right: 0;
+    background: rgba(13,17,23,0.97);
+    backdrop-filter: blur(20px);
+    padding: 1.5rem 5%;
+    border-bottom: 1px solid var(--border);
+    z-index: 99;
+    flex-direction: column;
+    gap: 1.2rem;
+  }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* ===== SECTIONS ===== */
+  section {
+    position: relative; z-index: 1;
+    padding: 100px 5%;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  section.full-bleed {
+    max-width: 100%;
+    padding-left: 5%;
+    padding-right: 5%;
+  }
+  .section-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--cyan);
+    margin-bottom: 0.75rem;
+    display: flex; align-items: center; gap: 0.75rem;
+  }
+  .section-eyebrow::after {
+    content: '';
+    display: inline-block;
+    width: 40px; height: 1px;
+    background: var(--cyan);
+    opacity: 0.5;
+  }
+  .section-title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    line-height: 1.15;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+  }
+  .section-subtitle {
+    font-size: 1.05rem;
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin-bottom: 3.5rem;
+    line-height: 1.7;
+  }
+
+  /* ===== HERO ===== */
+  #hero {
+    min-height: 100vh;
+    display: flex; align-items: center;
+    padding-top: 120px;
+    padding-bottom: 80px;
+  }
+  .hero-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+    width: 100%;
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    color: var(--gold);
+    background: var(--gold-dim);
+    border: 1px solid rgba(255,179,71,0.2);
+    padding: 0.35rem 0.9rem;
+    border-radius: 100px;
+    margin-bottom: 1.5rem;
+  }
+  .hero-badge::before {
+    content: '●';
+    font-size: 0.5rem;
+    animation: pulse-gold 2s infinite;
+  }
+  @keyframes pulse-gold {
+    0%,100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+  .hero-name {
+    font-family: var(--font-display);
+    font-size: clamp(2.8rem, 6vw, 4.5rem);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
+  }
+  .hero-name .first { color: var(--text-primary); }
+  .hero-name .last {
+    color: transparent;
+    -webkit-text-stroke: 1px var(--cyan);
+    display: block;
+  }
+  .hero-tagline {
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    color: var(--cyan);
+    margin-bottom: 1.5rem;
+    min-height: 1.5rem;
+  }
+  .hero-tagline #typewriter::after {
+    content: '|';
+    animation: blink 1s infinite;
+    margin-left: 2px;
+  }
+  @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
+  .hero-desc {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    line-height: 1.75;
+    margin-bottom: 2.5rem;
+    max-width: 520px;
+  }
+  .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: var(--cyan);
+    color: var(--space-navy);
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: 0.75rem 1.75rem;
+    border-radius: var(--radius-sm);
+    border: none; cursor: pointer;
+    transition: all var(--transition);
+  }
+  .btn-primary:hover {
+    background: #fff;
+    color: var(--space-navy);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px var(--cyan-glow);
+  }
+  .btn-outline {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: transparent;
+    color: var(--text-primary);
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 0.9rem;
+    padding: 0.75rem 1.75rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-active);
+    cursor: pointer;
+    transition: all var(--transition);
+  }
+  .btn-outline:hover {
+    background: var(--cyan-dim);
+    border-color: var(--cyan);
+    color: var(--cyan);
+    transform: translateY(-2px);
+  }
+  .hero-stats {
+    display: flex; gap: 2rem;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+  }
+  .stat-item { text-align: left; }
+  .stat-num {
+    font-family: var(--font-display);
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--cyan);
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    letter-spacing: 0.05em;
+    margin-top: 0.25rem;
+  }
+  /* Hero Visual */
+  .hero-visual {
+    display: flex; justify-content: center; align-items: center;
+    position: relative;
+  }
+  .orbit-system {
+    position: relative;
+    width: 320px; height: 320px;
+  }
+  .orbit-center {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100px; height: 100px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--surface-card), var(--surface-raised));
+    border: 2px solid var(--border-active);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--cyan);
+    text-align: center;
+    z-index: 3;
+    box-shadow: 0 0 40px var(--cyan-glow);
+  }
+  .orbit-ring {
+    position: absolute; top: 50%; left: 50%;
+    border: 1px solid rgba(0,212,255,0.15);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .orbit-ring-1 { width: 160px; height: 160px; animation: spin 8s linear infinite; }
+  .orbit-ring-2 { width: 240px; height: 240px; animation: spin 14s linear infinite reverse; }
+  .orbit-ring-3 { width: 310px; height: 310px; animation: spin 20s linear infinite; }
+  @keyframes spin { to { transform: translate(-50%, -50%) rotate(360deg); } }
+  .orbit-node {
+    position: absolute;
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: var(--surface-card);
+    border: 1px solid var(--border-active);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem;
+    box-shadow: 0 0 12px var(--cyan-glow);
+    counter-reset: none;
+  }
+  .orbit-ring-1 .orbit-node { top: -18px; left: 50%; margin-left: -18px; }
+  .orbit-ring-2 .orbit-node:nth-child(1) { top: -18px; left: 50%; margin-left: -18px; }
+  .orbit-ring-2 .orbit-node:nth-child(2) { bottom: -18px; left: 50%; margin-left: -18px; }
+  .orbit-ring-3 .orbit-node:nth-child(1) { top: -18px; left: 50%; margin-left: -18px; }
+  .orbit-ring-3 .orbit-node:nth-child(2) { top: 50%; right: -18px; margin-top: -18px; }
+  .orbit-ring-3 .orbit-node:nth-child(3) { bottom: -18px; left: 50%; margin-left: -18px; }
+
+  /* Social links */
+  .hero-socials {
+    display: flex; gap: 1rem;
+    margin-top: 2rem;
+  }
+  .social-link {
+    width: 36px; height: 36px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    transition: all var(--transition);
+  }
+  .social-link:hover {
+    border-color: var(--cyan);
+    color: var(--cyan);
+    background: var(--cyan-dim);
+  }
+
+  /* ===== ABOUT ===== */
+  #about { padding-top: 80px; }
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 5rem;
+    align-items: start;
+  }
+  .about-card {
+    background: var(--surface-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 2rem;
+    position: sticky;
+    top: 80px;
+  }
+  .about-avatar-placeholder {
+    width: 100%;
+    aspect-ratio: 1;
+    background: linear-gradient(135deg, var(--surface-raised), var(--surface-card));
+    border-radius: var(--radius);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 4rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+  .about-avatar-placeholder::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(circle at 30% 30%, var(--cyan-dim), transparent 60%);
+  }
+  .about-info-row {
+    display: flex; align-items: center; gap: 0.75rem;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.85rem;
+  }
+  .about-info-row:last-child { border-bottom: none; }
+  .info-label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    min-width: 80px;
+    letter-spacing: 0.05em;
+  }
+  .info-value { color: var(--text-secondary); }
+  .about-text p {
+    color: var(--text-secondary);
+    line-height: 1.8;
+    margin-bottom: 1.25rem;
+    font-size: 0.975rem;
+  }
+  .about-text p:last-child { margin-bottom: 0; }
+  .about-text strong { color: var(--cyan); font-weight: 500; }
+  .highlight-box {
+    background: var(--cyan-dim);
+    border: 1px solid var(--border-active);
+    border-radius: var(--radius-sm);
+    padding: 1.25rem 1.5rem;
+    margin-top: 2rem;
+    display: flex; gap: 1rem; align-items: flex-start;
+  }
+  .highlight-icon { font-size: 1.5rem; flex-shrink: 0; }
+  .highlight-text { font-size: 0.875rem; color: var(--text-secondary); line-height: 1.6; }
+  .highlight-text strong { color: var(--cyan); }
+
+  /* ===== SKILLS ===== */
+  #skills { background: none; }
+  .skills-dashboard {
+    background: var(--surface-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .dashboard-header {
+    background: var(--surface-raised);
+    padding: 1rem 1.5rem;
+    display: flex; align-items: center; gap: 0.75rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .dash-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+  }
+  .dash-dot.red { background: #FF5F57; }
+  .dash-dot.yellow { background: #FFBD2E; }
+  .dash-dot.green { background: #28CA41; }
+  .dashboard-title {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+    margin-left: 0.5rem;
+  }
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 0;
+  }
+  .skill-category {
+    padding: 1.75rem;
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .skill-category:nth-child(2n) { border-right: none; }
+  .skill-cat-label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--cyan);
+    margin-bottom: 1.25rem;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .skill-cat-label::before {
+    content: '▶';
+    font-size: 0.5rem;
+    opacity: 0.6;
+  }
+  .skill-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .skill-tag {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    padding: 0.3rem 0.7rem;
+    border-radius: var(--radius-sm);
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    transition: all var(--transition);
+  }
+  .skill-tag:hover {
+    border-color: var(--cyan);
+    color: var(--cyan);
+    background: var(--cyan-dim);
+  }
+  .skill-tag.primary {
+    background: var(--cyan-dim);
+    border-color: rgba(0,212,255,0.3);
+    color: var(--cyan);
+  }
+
+  /* ===== EXPERIENCE ===== */
+  .timeline { position: relative; padding-left: 2rem; }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 8px; bottom: 8px;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--cyan), transparent);
+    opacity: 0.3;
+  }
+  .timeline-item {
+    position: relative;
+    margin-bottom: 3rem;
+    padding-left: 2rem;
+  }
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -2rem;
+    top: 8px;
+    width: 9px; height: 9px;
+    border-radius: 50%;
+    background: var(--cyan);
+    box-shadow: 0 0 10px var(--cyan);
+    border: 2px solid var(--space-navy);
+  }
+  .timeline-card {
+    background: var(--surface-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.75rem;
+    transition: border-color var(--transition);
+  }
+  .timeline-card:hover { border-color: var(--border-active); }
+  .timeline-meta {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    gap: 1rem; flex-wrap: wrap; margin-bottom: 0.75rem;
+  }
+  .timeline-org {
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+  .timeline-role {
+    font-size: 0.875rem;
+    color: var(--cyan);
+    font-family: var(--font-mono);
+    margin-top: 0.2rem;
+  }
+  .timeline-date {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+    background: var(--surface-raised);
+    padding: 0.25rem 0.75rem;
+    border-radius: 100px;
+    border: 1px solid var(--border);
+  }
+  .timeline-points { margin-top: 1rem; }
+  .timeline-points li {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    padding: 0.3rem 0;
+    padding-left: 1rem;
+    position: relative;
+    line-height: 1.6;
+  }
+  .timeline-points li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--cyan);
+    opacity: 0.5;
+  }
+  .location-badge {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    display: flex; align-items: center; gap: 0.3rem;
+    margin-top: 0.5rem;
+  }
+
+  /* ===== EDUCATION ===== */
+  .edu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+  .edu-card {
+    background: var(--surface-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.75rem;
+    transition: all var(--transition);
+    position: relative;
+    overflow: hidden;
+  }
+  .edu-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(to right, var(--cyan), transparent);
+  }
+  .edu-card:hover { border-color: var(--border-active); transform: translateY(-3px); }
+  .edu-degree {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.35rem;
+  }
+  .edu-school {
+    font-size: 0.875rem;
+    color: var(--cyan);
+    margin-bottom: 0.5rem;
+  }
+  .edu-year {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    margin-bottom: 0.75rem;
+  }
+  .edu-detail {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    background: var(--surface-raised);
+    padding: 0.3rem 0.7rem;
+    border-radius: var(--radius-sm);
+    display: inline-block;
+  }
+
+  /* ===== PROJECTS ===== */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 1.75rem;
+  }
+  .project-card {
+    background: var(--surface-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 2rem;
+    display: flex; flex-direction: column;
+    transition: all var(--transition);
+    position: relative;
+    overflow: hidden;
+  }
+  .project-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--cyan), transparent);
+    opacity: 0;
+    transition: opacity var(--transition);
+  }
+  .project-card:hover {
+    border-color: var(--border-active);
+    transform: translateY(-4px);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+  }
+  .project-card:hover::after { opacity: 1; }
+  .project-header {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    margin-bottom: 1rem;
+  }
+  .project-icon {
+    font-size: 2rem;
+    width: 56px; height: 56px;
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .project-award {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--gold);
+    background: var(--gold-dim);
+    border: 1px solid rgba(255,179,71,0.2);
+    padding: 0.25rem 0.6rem;
+    border-radius: 100px;
+    display: flex; align-items: center; gap: 0.3rem;
+  }
+  .project-name {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+    line-height: 1.3;
+  }
+  .project-period {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    margin-bottom: 0.75rem;
+  }
+  .project-desc {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    line-height: 1.65;
+    flex: 1;
+    margin-bottom: 1.25rem;
+  }
+  .project-tools { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .tool-tag {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    padding: 0.2rem 0.55rem;
+    border-radius: var(--radius-sm);
+    background: var(--surface-raised);
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+  }
+
+  /* ===== PUBLICATIONS ===== */
+  .pub-list { display: flex; flex-direction: column; gap: 1.25rem; }
+  .pub-item {
+    background: var(--surface-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    display: flex; gap: 1rem;
+    transition: border-color var(--transition);
+  }
+  .pub-item:hover { border-color: var(--border-active); }
+  .pub-badge {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    padding: 0.3rem 0.5rem;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    white-space: nowrap;
+    flex-shrink: 0;
+    height: fit-content;
+    margin-top: 2px;
+  }
+  .pub-badge.journal { background: rgba(0,212,255,0.15); color: var(--cyan); border: 1px solid rgba(0,212,255,0.3); }
+  .pub-badge.conference { background: rgba(255,179,71,0.12); color: var(--gold); border: 1px solid rgba(255,179,71,0.2); }
+  .pub-badge.preprint { background: rgba(255,255,255,0.06); color: var(--text-muted); border: 1px solid var(--border); }
+  .pub-badge.submission { background: rgba(80,255,120,0.1); color: #50FF78; border: 1px solid rgba(80,255,120,0.2); }
+  .pub-title {
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    font-weight: 500;
+    line-height: 1.5;
+    margin-bottom: 0.4rem;
+  }
+  .pub-venue {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+  }
+
+  /* ===== ACHIEVEMENTS ===== */
+  .achievements-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.25rem;
+  }
+  .achievement-card {
+    background: var(--surface-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    display: flex; gap: 1rem; align-items: flex-start;
+    transition: all var(--transition);
+  }
+  .achievement-card:hover {
+    border-color: var(--gold);
+    background: rgba(255,179,71,0.04);
+  }
+  .achievement-icon {
+    font-size: 1.75rem;
+    width: 48px; height: 48px;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--surface-raised);
+    border-radius: var(--radius-sm);
+    flex-shrink: 0;
+  }
+  .achievement-title {
+    font-family: var(--font-display);
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.2rem;
+  }
+  .achievement-org {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    margin-bottom: 0.3rem;
+  }
+  .achievement-desc {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+  .achievement-year {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--gold);
+    background: var(--gold-dim);
+    padding: 0.1rem 0.5rem;
+    border-radius: 100px;
+    display: inline-block;
+    margin-top: 0.5rem;
+  }
+
+  /* ===== CERTIFICATIONS ===== */
+  .cert-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1rem;
+  }
+  .cert-card {
+    background: var(--surface-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.25rem;
+    display: flex; gap: 0.75rem; align-items: flex-start;
+    transition: all var(--transition);
+  }
+  .cert-card:hover { border-color: var(--border-active); }
+  .cert-icon {
+    font-size: 1.3rem; flex-shrink: 0; margin-top: 2px;
+  }
+  .cert-name {
+    font-size: 0.85rem;
+    color: var(--text-primary);
+    font-weight: 500;
+    margin-bottom: 0.2rem;
+    line-height: 1.4;
+  }
+  .cert-issuer {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--cyan);
+  }
+  .cert-date {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    margin-top: 0.2rem;
+  }
+
+  /* ===== CONTACT ===== */
+  #contact { padding-bottom: 120px; }
+  .contact-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+  }
+  .contact-info h3 {
+    font-family: var(--font-display);
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+  }
+  .contact-info p {
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: 2rem;
+    font-size: 0.95rem;
+  }
+  .contact-links { display: flex; flex-direction: column; gap: 1rem; }
+  .contact-link-item {
+    display: flex; align-items: center; gap: 1rem;
+    padding: 0.9rem 1.25rem;
+    background: var(--surface-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    transition: all var(--transition);
+  }
+  .contact-link-item:hover {
+    border-color: var(--cyan);
+    color: var(--cyan);
+    background: var(--cyan-dim);
+    transform: translateX(4px);
+  }
+  .contact-link-icon { font-size: 1.1rem; flex-shrink: 0; }
+  .contact-link-label { font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-muted); }
+  .contact-link-value { font-size: 0.875rem; color: inherit; }
+  .contact-form {
+    background: var(--surface-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 2rem;
+  }
+  .form-row { margin-bottom: 1.25rem; }
+  .form-label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+  }
+  .form-input, .form-textarea {
+    width: 100%;
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 0.75rem 1rem;
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: 0.875rem;
+    outline: none;
+    transition: border-color var(--transition);
+    resize: none;
+  }
+  .form-input:focus, .form-textarea:focus { border-color: var(--cyan); }
+  .form-input::placeholder, .form-textarea::placeholder { color: var(--text-muted); }
+  .form-textarea { height: 120px; }
+  .form-submit {
+    width: 100%;
+    background: var(--cyan);
+    color: var(--space-navy);
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: 0.85rem;
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all var(--transition);
+  }
+  .form-submit:hover {
+    background: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px var(--cyan-glow);
+  }
+  .form-note {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-align: center;
+    margin-top: 0.75rem;
+    font-family: var(--font-mono);
+  }
+
+  /* ===== FOOTER ===== */
+  footer {
+    position: relative; z-index: 1;
+    border-top: 1px solid var(--border);
+    padding: 2rem 5%;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 1rem;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+  }
+  .footer-logo { color: var(--cyan); }
+  .footer-links { display: flex; gap: 1.5rem; }
+  .footer-links a { color: var(--text-muted); transition: color var(--transition); }
+  .footer-links a:hover { color: var(--cyan); }
+
+  /* ===== SECTION DIVIDER ===== */
+  .section-divider {
+    border: none;
+    height: 1px;
+    background: var(--border);
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  /* ===== SCROLL REVEAL ===== */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+
+  /* ===== MEMBERSHIP SECTION ===== */
+  .membership-row {
+    display: flex; flex-wrap: wrap; gap: 1rem;
+    margin-top: 1rem;
+  }
+  .membership-badge {
+    display: flex; align-items: center; gap: 0.6rem;
+    background: var(--surface-card);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    transition: all var(--transition);
+  }
+  .membership-badge:hover { border-color: var(--border-active); color: var(--cyan); }
+  .membership-badge .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--cyan); flex-shrink: 0;
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 900px) {
+    .hero-inner { grid-template-columns: 1fr; }
+    .hero-visual { display: none; }
+    .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    .about-card { position: static; }
+    .contact-wrapper { grid-template-columns: 1fr; gap: 2.5rem; }
+    .nav-links, .nav-cta { display: none; }
+    .nav-hamburger { display: flex; }
+  }
+  @media (max-width: 600px) {
+    section { padding: 70px 4%; }
+    .hero-stats { flex-wrap: wrap; gap: 1.25rem; }
+    .projects-grid { grid-template-columns: 1fr; }
+    .skills-grid { grid-template-columns: 1fr; }
+    .skill-category { border-right: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    #starfield { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Starfield Background -->
+<canvas id="starfield"></canvas>
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="nav-logo">Abdullah<span>.</span></div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#publications">Research</a></li>
+    <li><a href="#achievements">Awards</a></li>
+    <li><a href="#contact" class="nav-cta">Contact</a></li>
+  </ul>
+  <div class="nav-hamburger" id="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#about" onclick="toggleMenu()">About</a>
+  <a href="#skills" onclick="toggleMenu()">Skills</a>
+  <a href="#experience" onclick="toggleMenu()">Experience</a>
+  <a href="#projects" onclick="toggleMenu()">Projects</a>
+  <a href="#publications" onclick="toggleMenu()">Research</a>
+  <a href="#achievements" onclick="toggleMenu()">Awards</a>
+  <a href="#contact" onclick="toggleMenu()">Contact</a>
+</div>
+
+<!-- HERO -->
+<section id="hero" class="full-bleed">
+  <div class="hero-inner" style="max-width:1200px; margin:0 auto; width:100%;">
+    <div class="hero-content">
+      <div class="hero-badge">Available for Project & Research Collaboration</div>
+      <div class="hero-name">
+        <span class="first">M Abdullah</span>
+        <span class="last">Khan</span>
+      </div>
+      <div class="hero-tagline">
+        <span id="typewriter"></span>
+      </div>
+      <p class="hero-desc">
+        Electrical & Electronic Engineering professional from Dhaka, Bangladesh, pushing the frontiers of robotics, embedded systems, and space technology. From building satellites to designing Mars rovers — engineering solutions that reach beyond Earth.
+      </p>
+      <div class="hero-actions">
+        <a href="#projects" class="btn-primary">View My Work →</a>
+        <a href="mailto:mabdullahkhan096@gmail.com" class="btn-outline">Get In Touch</a>
+      </div>
+      <div class="hero-socials">
+        <a href="https://linkedin.com/in/mabdullahkhan" class="social-link" title="LinkedIn" target="_blank">in</a>
+        <a href="https://github.com/mabdullahkhan" class="social-link" title="GitHub" target="_blank">GH</a>
+        <a href="https://orcid.org" class="social-link" title="OrcID" target="_blank">Ⓞ</a>
+        <a href="https://scholar.google.com" class="social-link" title="Google Scholar" target="_blank">GS</a>
+        <a href="https://www.researchgate.net" class="social-link" title="ResearchGate" target="_blank">RG</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-item">
+          <div class="stat-num">7th</div>
+          <div class="stat-label">CanSat Global 2025</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">13th</div>
+          <div class="stat-label">Mars Rover Global</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">5+</div>
+          <div class="stat-label">Publications</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">NPoC</div>
+          <div class="stat-label">SGAC Bangladesh</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="orbit-system">
+        <div class="orbit-ring orbit-ring-1">
+          <div class="orbit-node">🛰️</div>
+        </div>
+        <div class="orbit-ring orbit-ring-2">
+          <div class="orbit-node">🤖</div>
+          <div class="orbit-node">🪐</div>
+        </div>
+        <div class="orbit-ring orbit-ring-3">
+          <div class="orbit-node">🚀</div>
+          <div class="orbit-node">📚</div>
+          <div class="orbit-node">🔬</div>
+        </div>
+        <div class="orbit-center">Researcher<br/>& Engineer</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-eyebrow reveal">01 — Profile</div>
+  <div class="about-grid">
+    <div class="reveal reveal-delay-1">
+      <div class="about-card">
+        <div class="about-avatar-placeholder">
+          <img src="images/profile-photo.jpg" alt="Profile Photo">
+        </div>
+        <div class="about-info-row">
+          <span class="info-label">Location</span>
+          <span class="info-value">Dhaka, Bangladesh</span>
+        </div>
+        <div class="about-info-row">
+          <span class="info-label">Email</span>
+          <span class="info-value" style="font-size:0.8rem;">mabdullahkhan096@gmail.com</span>
+        </div>
+        <div class="about-info-row">
+          <span class="info-label">IEEE ID</span>
+          <span class="info-value">97205094</span>
+        </div>
+        <div class="about-info-row">
+          <span class="info-label">IAENG ID</span>
+          <span class="info-value">264282</span>
+        </div>
+                <div class="about-info-row">
+          <span class="info-label">American Space ID</span>
+          <span class="info-value">AC0001664</span>
+        </div>
+        <div class="about-info-row">
+          <span class="info-label">Languages</span>
+          <span class="info-value">Bengali, English</span>
+        </div>
+        <div class="about-info-row">
+          <span class="info-label">Status</span>
+          <span class="info-value" style="color:var(--cyan);">BSc. (In Progress)</span>
+        </div>
+        <br>
+        <a href="mailto:mabdullahkhan096@gmail.com?subject=CV Request" class="btn-primary" style="width:100%; justify-content:center;">
+          ⬇ Download CV
+        </a>
+      </div>
+    </div>
+    <div class="about-text reveal reveal-delay-2">
+      <h2 class="section-title">Engineering Solutions<br>Beyond Boundaries</h2>
+      <p>
+        I'm <strong>M Abdullah Khan</strong>, an Electrical & Electronic Engineering student at United International University, Dhaka, specializing in Robotics and Embedded Systems. My work sits at the intersection of ground-level IoT and orbital-scale space technology.
+      </p>
+      <p>
+        Over the past few years, I've had the privilege of competing on the world stage — placing <strong>7th globally in the 2025 CanSat Competition</strong> (organized by NASA and the American Astronautical Society) and <strong>13th globally in the University Rover Challenge 2022</strong>, ranked highest in Asia. These aren't just numbers; they're proof that engineering from Bangladesh can compete with the best in the world.
+      </p>
+      <p>
+        As the <strong>National Point of Contact for Bangladesh at the Space Generation Advisory Council (SGAC)</strong>, I coordinate space advocacy at the national level and represent my country in international forums. I believe space is not a luxury — it's a necessity for humanity's future, and every nation deserves a seat at that table.
+      </p>
+      <p>
+        Beyond hardware, I'm a published researcher, an IEEE leader, and someone who genuinely loves mentoring and building communities around science and technology. When I'm not designing circuits or debugging telemetry, I'm writing about the ideas that will shape tomorrow.
+      </p>
+      <div class="highlight-box">
+        <div class="highlight-icon">🎯</div>
+        <div class="highlight-text">
+          <strong>Research Interests:</strong> Robotics & Autonomous Systems · Space Exploration Technologies · Internet of Things · Embedded Systems · Industrial Automation & Control Systems
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-eyebrow reveal">02 — Capabilities</div>
+  <h2 class="section-title reveal">Technical Stack</h2>
+  <p class="section-subtitle reveal">Mission-ready competencies across hardware, software, and research domains.</p>
+  <div class="skills-dashboard reveal">
+    <div class="dashboard-header">
+      <div class="dash-dot red"></div>
+      <div class="dash-dot yellow"></div>
+      <div class="dash-dot green"></div>
+      <span class="dashboard-title">skill_matrix.sh — M Abdullah Khan</span>
+    </div>
+    <div class="skills-grid">
+      <div class="skill-category">
+        <div class="skill-cat-label">Embedded & Hardware</div>
+        <div class="skill-tags">
+          <span class="skill-tag primary">Embedded C</span>
+          <span class="skill-tag primary">Arduino</span>
+          <span class="skill-tag primary">Teensy</span>
+          <span class="skill-tag">PCB Design</span>
+          <span class="skill-tag">Verilog/HDL</span>
+          <span class="skill-tag">Circuit Assembly</span>
+          <span class="skill-tag">Proteus</span>
+          <span class="skill-tag">Multisim</span>
+        </div>
+      </div>
+      <div class="skill-category">
+        <div class="skill-cat-label">Software & Programming</div>
+        <div class="skill-tags">
+          <span class="skill-tag primary">C++</span>
+          <span class="skill-tag primary">Python</span>
+          <span class="skill-tag">ROS</span>
+          <span class="skill-tag">Machine Learning</span>
+          <span class="skill-tag">MATLAB</span>
+          <span class="skill-tag">Simulink</span>
+          <span class="skill-tag">HTML/CSS/JS</span>
+        </div>
+      </div>
+      <div class="skill-category">
+        <div class="skill-cat-label">IoT & Wireless Systems</div>
+        <div class="skill-tags">
+          <span class="skill-tag primary">IoT Systems</span>
+          <span class="skill-tag primary">LoRa</span>
+          <span class="skill-tag">Zigbee</span>
+          <span class="skill-tag">BLE</span>
+          <span class="skill-tag">MQTT</span>
+          <span class="skill-tag">ESP Modules</span>
+          <span class="skill-tag">Telemetry</span>
+          <span class="skill-tag">WSN</span>
+        </div>
+      </div>
+      <div class="skill-category">
+        <div class="skill-cat-label">Research & Analysis</div>
+        <div class="skill-tags">
+          <span class="skill-tag primary">Technical Writing</span>
+          <span class="skill-tag">SPSS</span>
+          <span class="skill-tag">Data Analysis</span>
+          <span class="skill-tag">Literature Review</span>
+          <span class="skill-tag">GEOS-Chem</span>
+          <span class="skill-tag">Experimental Design</span>
+        </div>
+      </div>
+      <div class="skill-category">
+        <div class="skill-cat-label">Tools & Infrastructure</div>
+        <div class="skill-tags">
+          <span class="skill-tag">Git / GitHub</span>
+          <span class="skill-tag">MySQL</span>
+          <span class="skill-tag">Google Cloud</span>
+          <span class="skill-tag">MS Project</span>
+          <span class="skill-tag">Trello</span>
+          <span class="skill-tag">Adobe PS/AI</span>
+          <span class="skill-tag">Network Security</span>
+        </div>
+      </div>
+      <div class="skill-category">
+        <div class="skill-cat-label">Leadership & Soft Skills</div>
+        <div class="skill-tags">
+          <span class="skill-tag primary">Team Management</span>
+          <span class="skill-tag">Project Coordination</span>
+          <span class="skill-tag">Event Planning</span>
+          <span class="skill-tag">Content & SEO</span>
+          <span class="skill-tag">Public Relations</span>
+          <span class="skill-tag">Budget Handling</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-eyebrow reveal">03 — Experience</div>
+  <h2 class="section-title reveal">Professional Journey</h2>
+  <p class="section-subtitle reveal">From content creation to international space advocacy — a career built on curiosity and commitment.</p>
+  <div class="timeline">
+    <div class="timeline-item reveal">
+      <div class="timeline-card">
+        <div class="timeline-meta">
+          <div>
+            <div class="timeline-org">Space Generation Advisory Council (SGAC)</div>
+            <div class="timeline-role">Research Assistant & National Point of Contact — Bangladesh</div>
+            <div class="location-badge">📍 Vienna, Austria (Remote)</div>
+          </div>
+          <div class="timeline-date">Nov 2023 – Present</div>
+        </div>
+        <ul class="timeline-points">
+          <li>Represent Bangladesh in global space advocacy and coordinate national-level space initiatives at an international advisory body accredited to the UN and ESA.</li>
+          <li>Spearheading contributions to three multidisciplinary research projects with international teams spanning atmospheric science, AI-assisted mission planning, and lunar resource utilization.</li>
+          <li>Organized technical workshops and knowledge-sharing sessions to promote space literacy and automation technology awareness across Bangladesh.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="timeline-item reveal reveal-delay-1">
+      <div class="timeline-card">
+        <div class="timeline-meta">
+          <div>
+            <div class="timeline-org">Ektukhani Robotics</div>
+            <div class="timeline-role">Content Writer & Coordinator</div>
+            <div class="location-badge">📍 Dhaka, Bangladesh</div>
+          </div>
+          <div class="timeline-date">Jan 2021 – Dec 2022</div>
+        </div>
+        <ul class="timeline-points">
+          <li>Developed engaging, technically accurate content on robotics, IoT, and electronics for the company's web platforms and publications, achieving a measurable 30% boost in reader engagement.</li>
+          <li>Executed in-depth research to ensure all published material maintained accuracy and clarity, establishing the brand as a reliable educational resource in the Bangladeshi tech community.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- LEADERSHIP -->
+<section id="leadership">
+  <div class="section-eyebrow reveal">04 — Leadership</div>
+  <h2 class="section-title reveal">Roles & Responsibilities</h2>
+  <p class="section-subtitle reveal">Building communities, running organizations, and driving impact within IEEE and university ecosystems.</p>
+  <div class="timeline">
+    <div class="timeline-item reveal">
+      <div class="timeline-card">
+        <div class="timeline-meta">
+          <div>
+            <div class="timeline-org">IEEE UIU Student Branch</div>
+            <div class="timeline-role">Chairperson</div>
+          </div>
+          <div class="timeline-date">Mar 2026 – Present</div>
+        </div>
+        <ul class="timeline-points">
+          <li>Leading the student branch in hosting engineering workshops, seminars, and events that foster research inquiry. Previously served as Vice-Chair (Technical) from Mar 2025–Mar 2026.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="timeline-item reveal reveal-delay-1">
+      <div class="timeline-card">
+        <div class="timeline-meta">
+          <div>
+            <div class="timeline-org">IEEE Day (Global)</div>
+            <div class="timeline-role">Marketing Lead</div>
+          </div>
+          <div class="timeline-date">Feb 2025 – Jan 2026</div>
+        </div>
+        <ul class="timeline-points">
+          <li>Launched and scaled social media campaigns for global IEEE Day, boosting cross-platform engagement and participation. Previously served as Communications Lead (Feb 2024–Feb 2025).</li>
+        </ul>
+      </div>
+    </div>
+    <div class="timeline-item reveal reveal-delay-2">
+      <div class="timeline-card">
+        <div class="timeline-meta">
+          <div>
+            <div class="timeline-org">UIU Science Forum</div>
+            <div class="timeline-role">President</div>
+          </div>
+          <div class="timeline-date">Jan 2023 – Dec 2023</div>
+        </div>
+        <ul class="timeline-points">
+          <li>Managed a core team of 15+ and 50+ general members, overseeing the successful planning and execution of science outreach and community-building activities at UIU.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="timeline-item reveal reveal-delay-3">
+      <div class="timeline-card">
+        <div class="timeline-meta">
+          <div>
+            <div class="timeline-org">UIU Robotics Club</div>
+            <div class="timeline-role">Joint Secretary (Public Relations)</div>
+          </div>
+          <div class="timeline-date">Jul 2022 – Jun 2023</div>
+        </div>
+        <ul class="timeline-points">
+          <li>Orchestrated club competitions and robotics workshops; grew membership to 300+ participants for the CSE project showcase.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="section-eyebrow reveal">05 — Education</div>
+  <h2 class="section-title reveal">Academic Background</h2>
+  <div class="edu-grid">
+    <div class="edu-card reveal">
+      <div style="font-size:2rem; margin-bottom:1rem;">🎓</div>
+      <div class="edu-degree">BSc. in Electrical & Electronic Engineering</div>
+      <div class="edu-school">United International University (UIU)</div>
+      <div class="edu-year">Jan 2020 – Present · Dhaka, Bangladesh</div>
+      <div class="edu-detail">Major: Robotics & Embedded Systems</div>
+    </div>
+    <div class="edu-card reveal reveal-delay-1">
+      <div style="font-size:2rem; margin-bottom:1rem;">📚</div>
+      <div class="edu-degree">Higher Secondary Certificate (HSC)</div>
+      <div class="edu-school">Dr. Mahbubur Rahman Mollah College</div>
+      <div class="edu-year">Aug 2017 – Jun 2019 · Dhaka, Bangladesh</div>
+      <div class="edu-detail">GPA 4.67 / 5.00</div>
+    </div>
+    <div class="edu-card reveal reveal-delay-2">
+      <div style="font-size:2rem; margin-bottom:1rem;">🏫</div>
+      <div class="edu-degree">Secondary School Certificate (SSC)</div>
+      <div class="edu-school">Mohanagar Ideal School & College</div>
+      <div class="edu-year">Jan 2015 – Mar 2017 · Dhaka, Bangladesh</div>
+      <div class="edu-detail">GPA 5.00 / 5.00 — Perfect Score</div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-eyebrow reveal">06 — Projects</div>
+  <h2 class="section-title reveal">Engineering Portfolio</h2>
+  <p class="section-subtitle reveal">Hardware systems and research prototypes that have competed on the global stage.</p>
+  <div class="projects-grid">
+    <div class="project-card reveal">
+      <div class="project-header">
+        <div class="project-icon">🩺</div>
+        <div class="project-award">🏆 IEEE YESIST12 Top 10</div>
+      </div>
+      <div class="project-name">Wearable Maternal Observatory Monitoring System</div>
+      <div class="project-period">Feb 2025 – Aug 2025</div>
+      <p class="project-desc">
+        Led a 10-member team through the full development lifecycle of a wearable IoT health system designed to monitor maternal health in real-time. The system uses IoT-enabled sensors and embedded technologies to provide continuous, cloud-connected monitoring — addressing a critical healthcare gap in developing regions.
+      </p>
+      <div class="project-tools">
+        <span class="tool-tag">Arduino</span>
+        <span class="tool-tag">IoT Sensors</span>
+        <span class="tool-tag">Embedded C</span>
+        <span class="tool-tag">Cloud Monitoring</span>
+        <span class="tool-tag">Wearable Tech</span>
+      </div>
+    </div>
+    <div class="project-card reveal reveal-delay-1">
+      <div class="project-header">
+        <div class="project-icon">🛸</div>
+        <div class="project-award">🌍 7th Globally 2025</div>
+      </div>
+      <div class="project-name">UIU CanSat — A Can-Sized Satellite</div>
+      <div class="project-period">Nov 2023 – Jul 2025</div>
+      <p class="project-desc">
+        Architected and led the electrical systems and communication modules for a functional CanSat prototype designed for atmospheric data collection and telemetry. Competed in the American Astronautical Society's CanSat Competition, sponsored by NASA and the US Naval Research Lab — placing 11th globally in 2024 and 7th globally in 2025.
+      </p>
+      <div class="project-tools">
+        <span class="tool-tag">Teensy MCU</span>
+        <span class="tool-tag">GPS Sensors</span>
+        <span class="tool-tag">Telemetry</span>
+        <span class="tool-tag">Pressure/Temp Sensors</span>
+        <span class="tool-tag">Accelerometer</span>
+      </div>
+    </div>
+    <div class="project-card reveal reveal-delay-2">
+      <div class="project-header">
+        <div class="project-icon">🤖</div>
+        <div class="project-award">🌏 #1 in Asia 2022</div>
+      </div>
+      <div class="project-name">UIU Mars Rover — Planetary Exploration Prototype</div>
+      <div class="project-period">Oct 2021 – Aug 2022</div>
+      <p class="project-desc">
+        Led cross-functional team operations and project finances for a full-scale Mars rover prototype. Contributed to the design of electrical and mechanical systems, authored project documentation, and managed timelines via Gantt charts. Achieved 13th globally and ranked highest in Asia at the University Rover Challenge 2022, organized by The Mars Society.
+      </p>
+      <div class="project-tools">
+        <span class="tool-tag">Arduino</span>
+        <span class="tool-tag">C++</span>
+        <span class="tool-tag">PCB Design</span>
+        <span class="tool-tag">System Integration</span>
+        <span class="tool-tag">Gantt Planning</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- PUBLICATIONS -->
+<section id="publications">
+  <div class="section-eyebrow reveal">07 — Research</div>
+  <h2 class="section-title reveal">Publications</h2>
+  <p class="section-subtitle reveal">Peer-reviewed work spanning space systems, AI mission planning, hardware design, and health technology.</p>
+  <div class="pub-list">
+    <div class="pub-item reveal">
+      <div class="pub-badge submission">In Review</div>
+      <div>
+        <div class="pub-title">Assessing the Environmental Consequences of Satellite Reentry: Impact on Ozone Layer Depletion Using the GEOS-Chem Global Chemistry-Transport Model</div>
+        <div class="pub-venue">77th International Astronautical Congress (IAC 2026) · International Astronautical Federation</div>
+      </div>
+    </div>
+    <div class="pub-item reveal reveal-delay-1">
+      <div class="pub-badge journal">Journal</div>
+      <div>
+        <div class="pub-title">AI-Powered Space Mission Risk Prediction: Real-Time Failure Detection and Adaptive Contingency Planning</div>
+        <div class="pub-venue">58th IAA Symposium on Safety, Quality & Knowledge Management in Space Activities · IAC 2025 (pp. 206–218)</div>
+      </div>
+    </div>
+    <div class="pub-item reveal reveal-delay-2">
+      <div class="pub-badge journal">Journal</div>
+      <div>
+        <div class="pub-title">Lunar Vitalis: Unlocking Resources for Sustained Exploration</div>
+        <div class="pub-venue">IAF Space Exploration Symposium · 76th International Astronautical Congress (pp. 597–611)</div>
+      </div>
+    </div>
+    <div class="pub-item reveal">
+      <div class="pub-badge conference">Conference</div>
+      <div>
+        <div class="pub-title">Design and Performance Analysis of a 28 GHz Hexa-slot Antenna for Bangladesh's Emerging Smart Infrastructure in Medical Applications</div>
+        <div class="pub-venue">IEEE CS Bangladesh Chapter Symposium, Vol. 3 · Nov 22–23, 2024 · Dhaka, Bangladesh</div>
+      </div>
+    </div>
+    <div class="pub-item reveal reveal-delay-1">
+      <div class="pub-badge conference">Conference</div>
+      <div>
+        <div class="pub-title">The Effects of Blue Light Emission from Electronic Devices on Human Sleep Patterns and Health</div>
+        <div class="pub-venue">Research Journal of Advanced Engineering and Science, Vol. 8.2 (2023): 33–35</div>
+      </div>
+    </div>
+    <div class="pub-item reveal reveal-delay-2">
+      <div class="pub-badge preprint">Pre-print</div>
+      <div>
+        <div class="pub-title">Bangladesh's Sustainable Water Production Solutions: An Analysis of Different Methods</div>
+        <div class="pub-venue">Institute of Electrical and Electronics Engineers (IEEE) · 2023</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- ACHIEVEMENTS -->
+<section id="achievements">
+  <div class="section-eyebrow reveal">08 — Recognition</div>
+  <h2 class="section-title reveal">Honors & Awards</h2>
+  <p class="section-subtitle reveal">Recognition from international competitions, IEEE, and national organizations.</p>
+  <div class="achievements-grid">
+    <div class="achievement-card reveal">
+      <div class="achievement-icon">🥇</div>
+      <div>
+        <div class="achievement-title">EEE Day 2024 Champion</div>
+        <div class="achievement-org">Dept. of EEE, United International University</div>
+        <div class="achievement-desc">Recognized as Champion among 15 teams in the Research Poster Presentation contest at EEE Day 2024.</div>
+        <div class="achievement-year">Nov 2024</div>
+      </div>
+    </div>
+    <div class="achievement-card reveal reveal-delay-1">
+      <div class="achievement-icon">🌏</div>
+      <div>
+        <div class="achievement-title">IEEE Region 10 WIE Pre-University Champion</div>
+        <div class="achievement-org">IEEE Region 10 Women in Engineering</div>
+        <div class="achievement-desc">Recognized for outstanding contribution and participation in IEEE R10 Women in Engineering pre-university initiatives.</div>
+        <div class="achievement-year">Dec 2023</div>
+      </div>
+    </div>
+    <div class="achievement-card reveal reveal-delay-2">
+      <div class="achievement-icon">⚖️</div>
+      <div>
+        <div class="achievement-title">IEEE R10 Ethics Champion</div>
+        <div class="achievement-org">IEEE Region 10 Educational Activities Committee</div>
+        <div class="achievement-desc">Awarded for excellence in promoting ethical standards and professional conduct across IEEE student and professional communities.</div>
+        <div class="achievement-year">Oct 2023</div>
+      </div>
+    </div>
+    <div class="achievement-card reveal">
+      <div class="achievement-icon">🇧🇩</div>
+      <div>
+        <div class="achievement-title">Mujib 100 Idea Contest Finalist</div>
+        <div class="achievement-org">University Grant Commission (UGC), Bangladesh</div>
+        <div class="achievement-desc">Selected as one of 40 national finalists in the prestigious Mujib 100 Idea Contest, held on the 100th Birth Anniversary of Bangabandhu Sheikh Mujibur Rahman.</div>
+        <div class="achievement-year">Nov 2021</div>
+      </div>
+    </div>
+    <div class="achievement-card reveal reveal-delay-1">
+      <div class="achievement-icon">🥉</div>
+      <div>
+        <div class="achievement-title">EEE Day 2021 — 2nd Runner-Up</div>
+        <div class="achievement-org">Dept. of EEE, Green University of Bangladesh</div>
+        <div class="achievement-desc">Achieved 2nd runner-up among 50 teams from different universities in a virtual poster presentation competition.</div>
+        <div class="achievement-year">Oct 2021</div>
+      </div>
+    </div>
+    <div class="achievement-card reveal reveal-delay-2">
+      <div class="achievement-icon">🏆</div>
+      <div>
+        <div class="achievement-title">IEEE YESIST12 Top 10 Finalist</div>
+        <div class="achievement-org">Universiti Kebangsaan Malaysia</div>
+        <div class="achievement-desc">Secured a Top 10 finish at the international IEEE YESIST12 Finals with the Wearable Maternal Monitoring System.</div>
+        <div class="achievement-year">2025</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- CERTIFICATIONS -->
+<section id="certifications">
+  <div class="section-eyebrow reveal">09 — Credentials</div>
+  <h2 class="section-title reveal">Certifications</h2>
+  <div class="cert-grid">
+    <div class="cert-card reveal">
+      <div class="cert-icon">🎨</div>
+      <div>
+        <div class="cert-name">Innovation Through Design: Think, Make, Break, Repeat</div>
+        <div class="cert-issuer">University of Sydney</div>
+        <div class="cert-date">Jun 2025</div>
+      </div>
+    </div>
+    <div class="cert-card reveal reveal-delay-1">
+      <div class="cert-icon">🍁</div>
+      <div>
+        <div class="cert-name">Energy Harvesting</div>
+        <div class="cert-issuer">Sungkyunkwan University</div>
+        <div class="cert-date">Mar 2022</div>
+      </div>
+    </div>
+    <div class="cert-card reveal reveal-delay-2">
+      <div class="cert-icon">💫</div>
+      <div>
+        <div class="cert-name">Quick Start to IoT</div>
+        <div class="cert-issuer">RoboDoc Limited</div>
+        <div class="cert-date">Jan 2022</div>
+      </div>
+    </div>
+    <div class="cert-card reveal">
+      <div class="cert-icon">🤖</div>
+      <div>
+        <div class="cert-name">Robotics: Basic to Advanced Course</div>
+        <div class="cert-issuer">RoboTech Valley</div>
+        <div class="cert-date">Apr 2021</div>
+      </div>
+    </div>
+    <div class="cert-card reveal reveal-delay-1">
+      <div class="cert-icon">🔌</div>
+      <div>
+        <div class="cert-name">Introduction to IoT and Embedded Systems</div>
+        <div class="cert-issuer">University of California, Irvine</div>
+        <div class="cert-date">Jun 2020</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-eyebrow reveal">10 — Connect</div>
+  <div class="contact-wrapper">
+    <div class="contact-info reveal">
+      <h3>Let's Build<br>Something Great.</h3>
+      <p>Whether you're looking for a research collaborator, a robotics engineer, or a passionate speaker for your next event — I'm always open to meaningful conversations and new opportunities.</p>
+      <div class="contact-links">
+        <a href="mailto:mabdullahkhan096@gmail.com" class="contact-link-item">
+          <div class="contact-link-icon">✉️</div>
+          <div>
+            <div class="contact-link-label">Primary Email</div>
+            <div class="contact-link-value">mabdullahkhan096@gmail.com</div>
+          </div>
+        </a>
+        <a href="mailto:mabdullahkhan@ieee.org" class="contact-link-item">
+          <div class="contact-link-icon">📧</div>
+          <div>
+            <div class="contact-link-label">IEEE Email</div>
+            <div class="contact-link-value">mabdullahkhan@ieee.org</div>
+          </div>
+        </a>
+        <a href="tel:+8801521715781" class="contact-link-item">
+          <div class="contact-link-icon">📱</div>
+          <div>
+            <div class="contact-link-label">Phone</div>
+            <div class="contact-link-value">+880-1521715781</div>
+          </div>
+        </a>
+        <a href="https://www.linkedin.com/in/m-abdullahkhan/" target="_blank" class="contact-link-item">
+          <div class="contact-link-icon">💼</div>
+          <div>
+            <div class="contact-link-label">LinkedIn</div>
+            <div class="contact-link-value">Connect professionally</div>
+          </div>
+        </a>
+      </div>
+    </div>
+    <div class="reveal reveal-delay-1">
+      <div class="contact-form">
+        <div class="form-row">
+          <label class="form-label">Your Name</label>
+          <input type="text" class="form-input" placeholder="Dr. Jane Smith">
+        </div>
+        <div class="form-row">
+          <label class="form-label">Email Address</label>
+          <input type="email" class="form-input" placeholder="jane@institution.edu">
+        </div>
+        <div class="form-row">
+          <label class="form-label">Subject</label>
+          <input type="text" class="form-input" placeholder="Research Collaboration / Opportunity">
+        </div>
+        <div class="form-row">
+          <label class="form-label">Message</label>
+          <textarea class="form-textarea" placeholder="Tell me about your project or opportunity..."></textarea>
+        </div>
+        <button class="form-submit" onclick="handleFormSubmit()">Send Message →</button>
+        <div class="form-note">Response within 48 hours · mabdullahkhan096@gmail.com</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">M Abdullah Khan</div>
+  <div style="font-size:0.72rem; color:var(--text-muted); font-family:var(--font-mono);">
+    EEE · Robotics · Space Tech · IEEE · SGAC
+  </div>
+  <div class="footer-links">
+    <a href="#hero">Top</a>
+    <a href="#projects">Projects</a>
+    <a href="#publications">Research</a>
+    <a href="#contact">Contact</a>
+  </div>
+</footer>
+
+<script>
+  // ===== STARFIELD =====
+  (function(){
+    const canvas = document.getElementById('starfield');
+    const ctx = canvas.getContext('2d');
+    let stars = [];
+    function resize(){
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    function init(){
+      stars = [];
+      for(let i=0; i<180; i++){
+        stars.push({
+          x: Math.random()*canvas.width,
+          y: Math.random()*canvas.height,
+          r: Math.random()*1.2+0.2,
+          o: Math.random()*0.6+0.1,
+          sp: Math.random()*0.3+0.05
+        });
+      }
+    }
+    function draw(){
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      stars.forEach(s=>{
+        ctx.beginPath();
+        ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+        ctx.fillStyle=`rgba(180,210,255,${s.o})`;
+        ctx.fill();
+        s.y += s.sp;
+        if(s.y>canvas.height){ s.y=-2; s.x=Math.random()*canvas.width; }
+      });
+      requestAnimationFrame(draw);
+    }
+    resize(); init(); draw();
+    window.addEventListener('resize',()=>{ resize(); init(); });
+  })();
+
+  // ===== TYPEWRITER =====
+  (function(){
+    const phrases = [
+      'Robotics & Embedded Systems Engineer',
+      'CanSat Competitor — 7th Globally',
+      'SGAC National Point of Contact',
+      'Space Technology Researcher',
+      'IEEE Chairperson & Leader',
+    ];
+    let pi=0, ci=0, deleting=false, el=document.getElementById('typewriter');
+    function type(){
+      const p=phrases[pi];
+      el.textContent = deleting ? p.slice(0,ci--) : p.slice(0,ci++);
+      if(!deleting && ci>p.length){ setTimeout(()=>{deleting=true; type();},1800); return; }
+      if(deleting && ci<0){ deleting=false; pi=(pi+1)%phrases.length; ci=0; setTimeout(type,400); return; }
+      setTimeout(type, deleting?40:65);
+    }
+    setTimeout(type,600);
+  })();
+
+  // ===== SCROLL REVEAL =====
+  (function(){
+    const obs = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting){ e.target.classList.add('visible'); obs.unobserve(e.target); }
+      });
+    },{ threshold:0.1 });
+    document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+  })();
+
+  // ===== MOBILE MENU =====
+  function toggleMenu(){
+    document.getElementById('mobileMenu').classList.toggle('open');
+  }
+
+  // ===== FORM =====
+  function handleFormSubmit(){
+    const btn = document.querySelector('.form-submit');
+    btn.textContent = '✓ Message Sent!';
+    btn.style.background = '#28CA41';
+    btn.style.color = '#fff';
+    setTimeout(()=>{
+      btn.textContent = 'Send Message →';
+      btn.style.background = '';
+      btn.style.color = '';
+    }, 3000);
+  }
+
+  // ===== NAV SCROLL =====
+  window.addEventListener('scroll',()=>{
+    const nav = document.getElementById('navbar');
+    nav.style.background = window.scrollY>50 ? 'rgba(10,14,26,0.97)' : 'rgba(10,14,26,0.85)';
+  });
+</script>
+</body>
+</html>
